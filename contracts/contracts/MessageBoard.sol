@@ -74,8 +74,8 @@ contract MessageBoard {
         uint256 blockNumber
     ) {
         require(_messageId > 0 && _messageId <= messageCount, "Invalid message ID");
-        Message memory msg = messages[_messageId];
-        return (msg.sender, msg.content, msg.timestamp, msg.blockNumber);
+        Message memory message = messages[_messageId];
+        return (message.sender, message.content, message.timestamp, message.blockNumber);
     }
     
     /**
@@ -95,7 +95,7 @@ contract MessageBoard {
     /**
      * @dev Get contract statistics
      * @return totalMessages Total number of messages
-     * @return uniqueSenders Number of unique senders (approximation)
+     * @return latestSender Address of the latest sender
      */
     function getStats() external view returns (
         uint256 totalMessages,

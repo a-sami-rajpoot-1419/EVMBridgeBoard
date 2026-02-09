@@ -12,7 +12,16 @@ module.exports = {
     }
   },
   networks: {
-    // Local Ethermint node
+    // Hardhat local network
+    hardhat: {
+      chainId: 31337
+    },
+    // Localhost network
+    localhost: {
+      url: "http://127.0.0.1:8545",
+      chainId: 31337
+    },
+    // Local Ethermint node (if using Docker)
     ethermint: {
       url: "http://localhost:8545",
       chainId: 9000,
@@ -22,11 +31,6 @@ module.exports = {
       ],
       gas: "auto",
       gasPrice: "auto"
-    },
-    // Alias for convenience
-    localhost: {
-      url: "http://localhost:8545",
-      chainId: 9000
     }
   },
   paths: {
