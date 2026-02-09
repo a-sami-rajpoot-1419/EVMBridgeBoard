@@ -1,0 +1,230 @@
+Developer-Only Implementation Specification
+
+Audience: Developers / AI coding agents
+Purpose: Build the system step-by-step without missing anything
+
+1. Repository Structure
+EVMBridgeBoard/
+├── chain/
+│   ├── docker-compose.yml
+│   ├── start-ethermint.sh
+│   └── data/
+├── contracts/
+│   ├── hardhat.config.js
+│   ├── contracts/
+│   │   └── MessageBoard.sol
+│   └── scripts/
+│       └── deploy.js
+├── frontend/
+│   ├── index.html
+│   ├── styles.css
+│   ├── app.js
+└── logs/
+
+2. Blockchain Setup (Docker)
+Container Responsibilities
+
+Produce blocks
+
+Expose JSON-RPC
+
+Maintain chain state
+
+Ports
+Port	Purpose
+26657	Tendermint RPC
+1317	Cosmos REST
+8545	Ethereum JSON-RPC
+3. Smart Contract Specification
+Contract: MessageBoard.sol
+State Variables
+
+uint256 messageCount
+
+string lastMessage
+
+address lastSender
+
+Function
+
+writeMessage(string calldata message)
+
+Events
+
+NewMessage(address sender, uint256 count, string message)
+
+4. Frontend UI Specification (EXTREMELY DETAILED)
+Page Layout
+
+Single-page application
+
+Width: 100%
+
+Max-width: 1200px
+
+Center aligned
+
+Color Scheme
+Element	Color
+Background	#0F172A (dark blue)
+Card background	#111827
+Primary text	#E5E7EB
+Accent	#38BDF8
+MetaMask	#F6851B
+Keplr	#7C3AED
+UI Sections (TOP → BOTTOM)
+Section 1: Header
+
+Height: 64px
+
+Title: EVMBridgeBoard
+
+Subtitle: “Cosmos EVM Dual Wallet Testbed”
+
+Section 2: Wallet Controls
+
+Button 1: “Connect MetaMask”
+
+Width: 180px
+
+Color: MetaMask orange
+
+Button 2: “Connect Keplr”
+
+Width: 180px
+
+Color: Keplr purple
+
+Active wallet is highlighted with border 2px solid #38BDF8
+
+Section 3: Address Panel
+EVM Address:     0xABC...
+Cosmos Address:  cosmos1xyz...
+Active Wallet:   MetaMask / Keplr
+
+Section 4: Message Input
+
+Textarea
+
+Height: 80px
+
+Max chars: 256
+
+Button: “Submit Message”
+
+Section 5: On-Chain State
+Total Messages: 12
+Last Message:   "Hello Cosmos EVM"
+Last Sender:    0xABC...
+
+Section 6: Logs Panel
+
+Scrollable box:
+
+Timestamp
+
+Wallet used
+
+Tx hash
+
+Gas used
+
+Status
+
+Example:
+
+[12:01:22] MetaMask → writeMessage() → gas: 53,412 → SUCCESS
+
+5. Wallet Handling Logic
+MetaMask
+
+Use window.ethereum
+
+Add chain programmatically
+
+Request accounts
+
+Sign EVM tx
+
+Keplr (IMPORTANT)
+
+Keplr DOES NOT allow silent chain addition
+
+Frontend SHALL:
+
+Detect missing chain
+
+Show modal with manual instructions
+
+Retry connection after approval
+
+6. Wallet Sync Logic
+
+There is NO sync mechanism.
+
+State sync happens because:
+
+Both wallets hit same RPC
+
+Same account
+
+Same chain
+
+Frontend logic:
+
+Always refetch contract state after tx confirmation
+
+7. Logging Strategy
+Client Logs
+
+Wallet type
+
+Tx hash
+
+Block number
+
+Gas used
+
+Timestamp
+
+Storage
+
+Console logs
+
+Optional file logs (dev only)
+
+8. Error Handling
+
+Wallet not installed
+
+Chain not added
+
+RPC unavailable
+
+Tx reverted
+
+Gas estimation failed
+
+All errors MUST:
+
+Be logged
+
+Be shown to user
+
+9. Build Order (MANDATORY)
+
+Start Ethermint Docker
+
+Verify RPC at localhost:8545
+
+Configure wallets
+
+Deploy contract
+
+Build frontend
+
+Test MetaMask tx
+
+Test Keplr tx
+
+Compare logs

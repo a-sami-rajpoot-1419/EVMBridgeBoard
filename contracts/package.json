@@ -1,0 +1,25 @@
+{
+  "name": "evmbridge-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for EVMBridgeBoard",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js --network ethermint",
+    "deploy:localhost": "hardhat run scripts/deploy.js --network localhost",
+    "test": "hardhat test",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "keywords": [
+    "ethereum",
+    "cosmos",
+    "ethermint",
+    "solidity",
+    "smart-contracts"
+  ],
+  "author": "EVMBridgeBoard",
+  "license": "MIT"
+}

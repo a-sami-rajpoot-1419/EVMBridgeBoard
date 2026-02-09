@@ -1,0 +1,186 @@
+System Requirements & Architecture Document
+
+Project: EVMBridgeBoard
+Audience: Technical + Non-Technical Stakeholders
+Purpose: Explain what is being built, why, and how it fits together
+
+1. Project Overview
+1.1 Project Name
+
+EVMBridgeBoard
+
+1.2 Project Description
+
+EVMBridgeBoard is a Cosmos SDK–based EVM blockchain application designed to test, demonstrate, and validate dual-wallet interoperability between MetaMask (EVM) and Keplr (Cosmos) using a single on-chain state.
+
+The system allows users to:
+
+Connect either MetaMask or Keplr
+
+Interact with a Solidity smart contract
+
+Write on-chain messages
+
+Observe identical state and balances across both wallets
+
+Analyze gas usage, transaction flow, and wallet behavior
+
+2. High-Level Architecture
+┌────────────┐
+│  Frontend  │
+│ (Web App)  │
+└─────┬──────┘
+      │ EVM JSON-RPC
+      ▼
+┌────────────┐
+│ Ethermint  │
+│ Blockchain │
+│ (Docker)   │
+└─────┬──────┘
+      │ State
+      ▼
+┌────────────┐
+│ Solidity   │
+│ Contracts  │
+└────────────┘
+
+3. System Components
+3.1 Blockchain Layer
+
+Technology: Cosmos SDK + Ethermint (EVM)
+
+Execution Environment: Docker container
+
+Smart Contracts: Solidity
+
+State Storage: EVM-compatible storage
+
+Gas Model: Ethereum-style gas
+
+3.2 Wallet Layer
+Wallet	Role
+MetaMask	EVM-native wallet
+Keplr	Cosmos wallet with EVM signing
+
+Both wallets:
+
+Control the same private key
+
+Represent the same account
+
+Use different address formats (0x… vs cosmos1…)
+
+3.3 Frontend Layer
+
+Web-based UI
+
+Wallet connection
+
+Message submission
+
+State visualization
+
+Logging & diagnostics
+
+4. Functional Requirements
+FR-1 Wallet Connection
+
+System SHALL allow users to connect MetaMask
+
+System SHALL allow users to connect Keplr
+
+System SHALL identify which wallet is active
+
+FR-2 Address Representation
+
+System SHALL use EVM address (0x…) as the primary identity
+
+System SHALL display Cosmos address (cosmos1…) as a derived format
+
+FR-3 Message Submission
+
+Users SHALL be able to write a message on-chain
+
+Each submission SHALL increment a global counter
+
+Latest message SHALL be retrievable
+
+FR-4 State Consistency
+
+Messages written via MetaMask SHALL be visible via Keplr
+
+Messages written via Keplr SHALL be visible via MetaMask
+
+FR-5 Gas & Transaction Analysis
+
+System SHALL display gas used per transaction
+
+System SHALL log which wallet signed each transaction
+
+5. Non-Functional Requirements
+NFR-1 Reliability
+
+System MUST not fork state between wallets
+
+NFR-2 Transparency
+
+All transactions MUST be logged client-side
+
+NFR-3 Usability
+
+UI MUST clearly show:
+
+Active wallet
+
+Addresses
+
+Last message
+
+Message count
+
+NFR-4 Maintainability
+
+Clear separation between:
+
+Blockchain
+
+Frontend
+
+Contracts
+
+6. Implementation Strategy
+Phase 1
+
+Deploy Ethermint blockchain using Docker
+
+Phase 2
+
+Configure wallets
+
+Phase 3
+
+Deploy Solidity MessageBoard contract
+
+Phase 4
+
+Build frontend UI
+
+Phase 5
+
+Logging, validation, and testing
+
+7. System Flow (Simplified)
+
+User opens web app
+
+User connects wallet
+
+Wallet signs EVM transaction
+
+Transaction hits Ethermint
+
+Contract state updates
+
+UI refreshes state
+
+Other wallet sees same state

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVMBridgeBoard - Cosmos EVM Dual Wallet Testbed</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <h1 class="title">EVMBridgeBoard</h1>
+            <p class="subtitle">Cosmos EVM Dual Wallet Testbed</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Wallet Controls Section -->
+        <section class="wallet-controls">
+            <h2 class="section-title">Wallet Connection</h2>
+            <div class="button-group">
+                <button id="connectMetaMask" class="btn btn-metamask">
+                    <span class="btn-icon">🦊</span>
+                    Connect MetaMask
+                </button>
+                <button id="connectKeplr" class="btn btn-keplr">
+                    <span class="btn-icon">⚛️</span>
+                    Connect Keplr
+                </button>
+            </div>
+            <div id="connectionStatus" class="status-message"></div>
+        </section>
+
+        <!-- Address Panel Section -->
+        <section class="card">
+            <h2 class="section-title">Account Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>EVM Address:</label>
+                    <span id="evmAddress" class="address">Not connected</span>
+                </div>
+                <div class="info-item">
+                    <label>Cosmos Address:</label>
+                    <span id="cosmosAddress" class="address">Not connected</span>
+                </div>
+                <div class="info-item">
+                    <label>Active Wallet:</label>
+                    <span id="activeWallet" class="wallet-badge">None</span>
+                </div>
+                <div class="info-item">
+                    <label>Balance:</label>
+                    <span id="balance" class="balance">0 ETH</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Input Section -->
+        <section class="card">
+            <h2 class="section-title">Write Message</h2>
+            <div class="message-input-container">
+                <textarea 
+                    id="messageInput" 
+                    class="message-textarea" 
+                    placeholder="Enter your message (max 256 characters)..."
+                    maxlength="256"
+                    rows="4"
+                ></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span> / 256 characters
+                </div>
+                <button id="submitMessage" class="btn btn-primary" disabled>
+                    Submit Message
+                </button>
+            </div>
+        </section>
+
+        <!-- On-Chain State Section -->
+        <section class="card">
+            <h2 class="section-title">On-Chain State</h2>
+            <div class="state-grid">
+                <div class="state-item">
+                    <div class="state-label">Total Messages</div>
+                    <div id="messageCount" class="state-value">0</div>
+                </div>
+                <div class="state-item full-width">
+                    <div class="state-label">Last Message</div>
+                    <div id="lastMessage" class="state-value state-message">No messages yet</div>
+                </div>
+                <div class="state-item full-width">
+                    <div class="state-label">Last Sender</div>
+                    <div id="lastSender" class="state-value state-address">-</div>
+                </div>
+            </div>
+            <button id="refreshState" class="btn btn-secondary">
+                🔄 Refresh State
+            </button>
+        </section>
+
+        <!-- Logs Panel Section -->
+        <section class="card">
+            <h2 class="section-title">Transaction Logs</h2>
+            <div class="logs-controls">
+                <button id="clearLogs" class="btn btn-small">Clear Logs</button>
+                <label class="auto-scroll-toggle">
+                    <input type="checkbox" id="autoScroll" checked>
+                    Auto-scroll
+                </label>
+            </div>
+            <div id="logsContainer" class="logs-container">
+                <div class="log-entry log-info">
+                    <span class="log-time">[--:--:--]</span>
+                    <span class="log-content">Connect a wallet to begin...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chain Configuration Modal -->
+        <div id="chainModal" class="modal">
+            <div class="modal-content">
+                <h3 class="modal-title">⚠️ Chain Configuration Required</h3>
+                <div class="modal-body">
+                    <p>The Ethermint chain needs to be added to your wallet.</p>
+                    
+                    <div class="chain-info">
+                        <h4>Chain Details:</h4>
+                        <ul>
+                            <li><strong>Network Name:</strong> Ethermint Local</li>
+                            <li><strong>RPC URL:</strong> http://localhost:8545</li>
+                            <li><strong>Chain ID:</strong> 9000</li>
+                            <li><strong>Currency Symbol:</strong> ETH</li>
+                        </ul>
+                    </div>
+
+                    <div id="keplrInstructions" class="keplr-instructions" style="display: none;">
+                        <h4>Keplr Setup:</h4>
+                        <p>Keplr requires manual chain addition. Please:</p>
+                        <ol>
+                            <li>Click "Add Chain" below</li>
+                            <li>Follow prompts in Keplr extension</li>
+                            <li>Approve the chain addition</li>
+                            <li>Click "Retry Connection"</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="addChainBtn" class="btn btn-primary">Add Chain</button>
+                    <button id="retryConnectionBtn" class="btn btn-secondary" style="display: none;">Retry Connection</button>
+                    <button id="closeModalBtn" class="btn btn-secondary">Close</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>EVMBridgeBoard v1.0 | Testing Dual-Wallet EVM Interoperability</p>
+            <p class="footer-warning">⚠️ Development Mode - Local Network Only</p>
+        </div>
+    </footer>
+
+    <!-- Load ethers.js from CDN -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js" type="text/javascript"></script>
+    <!-- Load app.js -->
+    <script src="app.js"></script>
+</body>
+</html>
