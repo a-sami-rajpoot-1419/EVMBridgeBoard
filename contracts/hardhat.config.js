@@ -21,13 +21,12 @@ module.exports = {
       url: "http://127.0.0.1:8545",
       chainId: 31337
     },
-    // Local Ethermint node (if using Docker)
-    ethermint: {
+    // Local Evmos node (Docker)
+    evmos: {
       url: "http://localhost:8545",
       chainId: 9000,
       accounts: [
-        // Default test account - REPLACE THIS IN PRODUCTION
-        "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+        "0x44D477C8124033A8E87060B5684BBD40803757C0610F57C06DFD7E075B5F0B60"  // validator
       ],
       gas: "auto",
       gasPrice: "auto"

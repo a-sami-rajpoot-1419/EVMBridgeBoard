@@ -2,16 +2,16 @@
 // Configuration
 // ==========================================
 
-// ⚠️ UPDATE THIS AFTER CONTRACT DEPLOYMENT!
-const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// ⚠️ CONTRACT DEPLOYED TO EVMOS!
+const CONTRACT_ADDRESS = "0x2e828C65E14D0091B5843D6c56ee7798F9187B1d";
 
 const CHAIN_CONFIG = {
-    chainId: "0x7a69", // 31337 in hex (Hardhat)
-    chainName: "Hardhat Local",
+    chainId: "0x2328", // 9000 in hex (Evmos)
+    chainName: "Evmos Local Testnet",
     rpcUrls: ["http://localhost:8545"],
     nativeCurrency: {
-        name: "Ether",
-        symbol: "ETH",
+        name: "Stake",
+        symbol: "STAKE",
         decimals: 18
     },
     blockExplorerUrls: []
@@ -20,37 +20,42 @@ const CHAIN_CONFIG = {
 // Cosmos chain config for Keplr
 const KEPLR_CHAIN_CONFIG = {
     chainId: "evmbridge_9000-1",
-    chainName: "Ethermint Local",
+    chainName: "Evmos Local Testnet",
     rpc: "http://localhost:26657",
     rest: "http://localhost:1317",
     bip44: {
         coinType: 60 // ETH coin type for EVM compatibility
     },
     bech32Config: {
-        bech32PrefixAccAddr: "ethm",
-        bech32PrefixAccPub: "ethmpub",
-        bech32PrefixValAddr: "ethvaloper",
-        bech32PrefixValPub: "ethvaloperpub",
-        bech32PrefixConsAddr: "ethvalcons",
-        bech32PrefixConsPub: "ethvalconspub"
+        bech32PrefixAccAddr: "evmos",
+        bech32PrefixAccPub: "evmospub",
+        bech32PrefixValAddr: "evmosvaloper",
+        bech32PrefixValPub: "evmosvaloperpub",
+        bech32PrefixConsAddr: "evmosvalcons",
+        bech32PrefixConsPub: "evmosvalconspub"
     },
     currencies: [
         {
-            coinDenom: "ETH",
-            coinMinimalDenom: "aphoton",
+            coinDenom: "STAKE",
+            coinMinimalDenom: "stake",
             coinDecimals: 18
         }
     ],
     feeCurrencies: [
         {
-            coinDenom: "ETH",
-            coinMinimalDenom: "aphoton",
-            coinDecimals: 18
+            coinDenom: "STAKE",
+            coinMinimalDenom: "stake",
+            coinDecimals: 18,
+            gasPriceStep: {
+                low: 0.01,
+                average: 0.025,
+                high: 0.04
+            }
         }
     ],
     stakeCurrency: {
-        coinDenom: "ETH",
-        coinMinimalDenom: "aphoton",
+        coinDenom: "STAKE",
+        coinMinimalDenom: "stake",
         coinDecimals: 18
     },
     coinType: 60,
@@ -508,15 +513,52 @@ async function loadBalance() {
 }
 
 // ==========================================
+// Address Conversion Functions
+// ==========================================
+/**
+ * Convert EVM address (0x...) to Cosmos address (evmos...)
+ * Uses Evmos REST API for accurate conversion
+ */
+async function evmToCosmosAddress(evmAddress) {
+    try {
+        const response = await fetch(`http://localhost:1317/ethermint/evm/v1/cosmos_account/${evmAddress}`);
+        const data = await response.json();
+        return data.cosmos_address || 'Error converting';
+    } catch (error) {
+        console.error('Address conversion error:', error);
+        // Fallback: return a placeholder
+        return `evmos1...${evmAddress.slice(-6)}`;
+    }
+}
+
+/**
+ * Convert Cosmos address (evmos...) to EVM address (0x...)
+ * Uses Evmos REST API for accurate conversion
+ */
+async function cosmosToEvmAddress(cosmosAddress) {
+    try {
+        const response = await fetch(`http://localhost:1317/ethermint/evm/v1/ethereum_address/${cosmosAddress}`);
+        const data = await response.json();
+        return data.ethereum_address || 'Error converting';
+    } catch (error) {
+        console.error('Address conversion error:', error);
+        return 'Error';
+    }
+}
+
+// ==========================================
 // UI Updates
 // ==========================================
 function updateUI() {
-    // Update addresses
+    // Update EVM address
     elements.evmAddress.textContent = currentAccount || 'Not connected';
     
-    // For Cosmos address (simplified - in production use proper conversion)
+    // Convert and update Cosmos address
     if (currentAccount) {
-        elements.cosmosAddress.textContent = `cosmos1${currentAccount.slice(2, 40)}...`;
+        elements.cosmosAddress.textContent = 'Converting...';
+        evmToCosmosAddress(currentAccount).then(cosmosAddr => {
+            elements.cosmosAddress.textContent = cosmosAddr;
+        });
     } else {
         elements.cosmosAddress.textContent = 'Not connected';
     }

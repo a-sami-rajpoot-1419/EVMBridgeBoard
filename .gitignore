@@ -7,6 +7,7 @@ logs/
 *.log
 .env
 .env.local
+.accounts.json
 .DS_Store
 Thumbs.db
 *.swp

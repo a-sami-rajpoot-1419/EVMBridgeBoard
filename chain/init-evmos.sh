@@ -23,6 +23,9 @@ if [ ! -f /home/evmos/.evmosd/config/genesis.json ]; then
 
   evmosd collect-gentxs
 
+  # Fix EVM denomination to use "stake" instead of "aevmos"
+  sed -i 's/"evm_denom": "aevmos"/"evm_denom": "stake"/' /home/evmos/.evmosd/config/genesis.json
+
   echo "Evmos initialized successfully"
 fi
 
