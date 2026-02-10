@@ -31,23 +31,56 @@
 
 ### Cosmos Format (for Keplr):
 ```
-Address: evmos1lyrz28lwrpzp9m7unk75zfnjdyxfu73y373f3t
-Validator: evmosvaloper1lyrz28lwrpzp9m7unk75zfnjdyxfu73yus7esk
+Address: evmos15nywy7thnxj6mnkddv07wgp4taqnhzfh9n5tql
+Validator: evmosvaloper15nywy7thnxj6mnkddv07wgp4taqnhzfhgammpz
 ```
 
 ### Ethereum Format (for MetaMask):
 ```
-Address: 0x... (derive from bech32 address as needed)
+Address: 0xA4C8E2797799a5adCEcD6b1fE720355f413B8937
+```
+
+### Private Key (Development Only):
+```
+0x44D477C8124033A8E87060B5684BBD40803757C0610F57C06DFD7E075B5F0B60
 ```
 
 ### Account Balance:
-- **Available**: 999,000,000,000,000,000,000 stake (999 tokens)
-- **Staked**: 1,000,000,000,000,000,000 stake (1 token as validator)
-- **Total**: 1000 tokens at genesis
+- **Available**: ~999 STAKE (after contract deployment)
+- **Total at Genesis**: 1000 STAKE (1 staked as validator)
 
-### Access Key:
-```bash
-# Inside container:
+⚠️ **WARNING:** This key is for LOCAL DEVELOPMENT ONLY! Never use in production!
+
+---
+
+## 📝 Deployed Smart Contracts
+
+### MessageBoard Contract
+- **Address**: `0x2e828C65E14D0091B5843D6c56ee7798F9187B1d`
+- **Deployment Block**: 34
+- **Deployment TX**: `0x8801ed58bc3560389dda5a48ecc41ebcbbf64f45501e78d232253ecdb1bc860e`
+- **Status**: ✅ Verified and operational
+- **Functions**:
+  - `writeMessage(string)` - Submit a message to the board
+  - `messageCount()` - Get total message count
+  - `lastMessage()` - Get the last message
+  - `lastSender()` - Get address of last sender
+  - `getLatestMessage()` - Get all latest message info
+- **Test Transaction**: Initial message "Hello from EVMBridgeBoard!" written at deployment
+
+### Verify Contract:
+```powershell
+# Check contract code is deployed
+$body = @{ jsonrpc='2.0'; method='eth_getCode'; params=@('0x2e828C65E14D0091B5843D6c56ee7798F9187B1d', 'latest'); id=1 } | ConvertTo-Json
+Invoke-RestMethod http://localhost:8545 -Method Post -Body $body -ContentType 'application/json'
+
+# Get message count
+$body = @{ jsonrpc='2.0'; method='eth_call'; params=@(@{to='0x2e828C65E14D0091B5843D6c56ee7798F9187B1d'; data='0x06540f7e'}, 'latest'); id=1 } | ConvertTo-Json
+Invoke-RestMethod http://localhost:8545 -Method Post -Body $body -ContentType 'application/json'
+```
+
+---
+
 docker exec evmbridge-evmos evmosd keys show validator --keyring-backend test
 
 # Export private key (BE CAREFUL - for dev only):
