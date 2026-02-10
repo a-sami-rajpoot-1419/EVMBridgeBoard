@@ -1,33 +1,16 @@
-version: '3.8'
-
 services:
-  ethermint:
-    image: evmos/evmos:latest
-    container_name: evmbridge-ethermint
+  evmos:
+    image: tharsishq/evmos:v18.1.0
+    container_name: evmbridge-evmos
     ports:
-      - "26657:26657"  # Tendermint RPC
-      - "1317:1317"    # Cosmos REST API
-      - "8545:8545"    # Ethereum JSON-RPC
-      - "8546:8546"    # Ethereum WebSocket
+      - "26657:26657"
+      - "1317:1317"
+      - "8545:8545"
+      - "8546:8546"
     volumes:
-      - ./data:/root/.evmosd
-    command: >
-      sh -c "
-      if [ ! -d /root/.evmosd/config ]; then
-        evmosd init evmbridge-node --chain-id evmbridge_9000-1 &&
-        evmosd keys add validator --keyring-backend test &&
-        evmosd add-genesis-account \$(evmosd keys show validator -a --keyring-backend test) 1000000000000000000000aevmos &&
-        evmosd gentx validator 1000000000000000000aevmos --chain-id evmbridge_9000-1 --keyring-backend test &&
-        evmosd collect-gentxs &&
-        sed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = [\"*\"]/' /root/.evmosd/config/config.toml &&
-        sed -i 's/enable = false/enable = true/' /root/.evmosd/config/app.toml &&
-        sed -i 's/swagger = false/swagger = true/' /root/.evmosd/config/app.toml &&
-        sed -i 's/enabled-unsafe-cors = false/enabled-unsafe-cors = true/' /root/.evmosd/config/app.toml;
-      fi &&
-      evmosd start --pruning=nothing --rpc.unsafe --json-rpc.api eth,txpool,personal,net,debug,web3 --json-rpc.enable
-      "
-    networks:
-      - evmbridge-network
+      - ./data:/home/evmos/.evmosd
+      - ./init-evmos.sh:/init-evmos.sh
+    entrypoint: ["/bin/sh", "/init-evmos.sh"]
     restart: unless-stopped
 
 networks:

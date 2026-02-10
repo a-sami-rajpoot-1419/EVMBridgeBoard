@@ -1,0 +1,302 @@
+2026-02-10 12:12:03.812 | Initializing Evmos node...
+2026-02-10 12:12:03.941 | {"app_message":{"07-tendermint":null,"auth":{"accounts":[],"params":{"max_memo_characters":"256","sig_verify_cost_ed25519":"590","sig_verify_cost_secp256k1":"1000","tx_sig_limit":"7","tx_size_cost_per_byte":"10"}},"authz":{"authorization":[]},"bank":{"balances":[],"denom_metadata":[],"params":{"default_send_enabled":true,"send_enabled":[]},"send_enabled":[],"supply":[]},"capability":{"index":"1","owners":[]},"consensus":null,"distribution":{"delegator_starting_infos":[],"delegator_withdraw_infos":[],"fee_pool":{"community_pool":[]},"outstanding_rewards":[],"params":{"base_proposer_reward":"0.000000000000000000","bonus_proposer_reward":"0.000000000000000000","community_tax":"0.020000000000000000","withdraw_addr_enabled":true},"previous_proposer":"","validator_accumulated_commissions":[],"validator_current_rewards":[],"validator_historical_rewards":[],"validator_slash_events":[]},"epochs":{"epochs":[{"current_epoch":"0","current_epoch_start_height":"0","current_epoch_start_time":"0001-01-01T00:00:00Z","duration":"604800s","epoch_counting_started":false,"identifier":"week","start_time":"0001-01-01T00:00:00Z"},{"current_epoch":"0","current_epoch_start_height":"0","current_epoch_start_time":"0001-01-01T00:00:00Z","duration":"86400s","epoch_counting_started":false,"identifier":"day","start_time":"0001-01-01T00:00:00Z"}]},"erc20":{"params":{"enable_erc20":true,"enable_evm_hook":true},"token_pairs":[]},"evidence":{"evidence":[]},"evm":{"accounts":[],"params":{"active_precompiles":["0x0000000000000000000000000000000000000100","0x0000000000000000000000000000000000000400","0x0000000000000000000000000000000000000800","0x0000000000000000000000000000000000000801","0x0000000000000000000000000000000000000802","0x0000000000000000000000000000000000000803","0x0000000000000000000000000000000000000804","0x0000000000000000000000000000000000000900","0x0000000000000000000000000000000000000901"],"allow_unprotected_txs":false,"chain_config":{"arrow_glacier_block":"0","berlin_block":"0","byzantium_block":"0","cancun_block":"0","constantinople_block":"0","dao_fork_block":"0","dao_fork_support":true,"eip150_block":"0","eip150_hash":"0x0000000000000000000000000000000000000000000000000000000000000000","eip155_block":"0","eip158_block":"0","gray_glacier_block":"0","homestead_block":"0","istanbul_block":"0","london_block":"0","merge_netsplit_block":"0","muir_glacier_block":"0","petersburg_block":"0","shanghai_block":"0"},"enable_call":true,"enable_create":true,"evm_channels":["channel-10","channel-31","channel-83"],"evm_denom":"aevmos","extra_eips":["3855"]}},"feegrant":{"allowances":[]},"feemarket":{"block_gas":"0","params":{"base_fee":"1000000000","base_fee_change_denominator":8,"elasticity_multiplier":2,"enable_height":"0","min_gas_multiplier":"0.500000000000000000","min_gas_price":"0.000000000000000000","no_base_fee":false}},"genutil":{"gen_txs":[]},"gov":{"deposit_params":null,"deposits":[],"params":{"burn_proposal_deposit_prevote":false,"burn_vote_quorum":false,"burn_vote_veto":true,"max_deposit_period":"172800s","min_deposit":[{"amount":"10000000","denom":"stake"}],"min_initial_deposit_ratio":"0.000000000000000000","quorum":"0.334000000000000000","threshold":"0.500000000000000000","veto_threshold":"0.334000000000000000","voting_period":"172800s"},"proposals":[],"starting_proposal_id":"1","tally_params":null,"votes":[],"voting_params":null},"ibc":{"channel_genesis":{"ack_sequences":[],"acknowledgements":[],"channels":[],"commitments":[],"next_channel_sequence":"0","receipts":[],"recv_sequences":[],"send_sequences":[]},"client_genesis":{"clients":[],"clients_consensus":[],"clients_metadata":[],"create_localhost":false,"next_client_sequence":"0","params":{"allowed_clients":["06-solomachine","07-tendermint","09-localhost"]}},"connection_genesis":{"client_connection_paths":[],"connections":[],"next_connection_sequence":"0","params":{"max_expected_time_per_block":"30000000000"}}},"incentives":{"gas_meters":[],"incentives":[],"params":{"allocation_limit":"0","enable_incentives":false,"incentives_epoch_identifier":"","reward_scaler":"0"}},"inflation":{"epoch_identifier":"day","epochs_per_period":"365","params":{"enable_inflation":true,"exponential_calculation":{"a":"300000000.000000000000000000","bonding_target":"0.660000000000000000","c":"9375000.000000000000000000","max_variance":"0.000000000000000000","r":"0.500000000000000000"},"inflation_distribution":{"community_pool":"0.466666666000000000","staking_rewards":"0.533333334000000000","usage_incentives":"0.000000000000000000"},"mint_denom":"aevmos"},"period":"0","skipped_epochs":"0"},"interchainaccounts":{"controller_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"controller_enabled":true},"ports":[]},"host_genesis_state":{"active_channels":[],"interchain_accounts":[],"params":{"allow_messages":["*"],"host_enabled":true},"port":"icahost"}},"params":null,"revenue":{"params":{"addr_derivation_cost_create":"50","developer_shares":"0.500000000000000000","enable_revenue":true},"revenues":[]},"slashing":{"missed_blocks":[],"params":{"downtime_jail_duration":"600s","min_signed_per_window":"0.500000000000000000","signed_blocks_window":"100","slash_fraction_double_sign":"0.050000000000000000","slash_fraction_downtime":"0.010000000000000000"},"signing_infos":[]},"staking":{"delegations":[],"exported":false,"last_total_power":"0","last_validator_powers":[],"params":{"bond_denom":"stake","historical_entries":10000,"max_entries":7,"max_validators":100,"min_commission_rate":"0.050000000000000000","unbonding_time":"1814400s"},"redelegations":[],"unbonding_delegations":[],"validators":[]},"transfer":{"denom_traces":[],"params":{"receive_enabled":true,"send_enabled":true},"port_id":"transfer","total_escrowed":[]},"upgrade":{},"vesting":{}},"chain_id":"evmbridge_9000-1","gentxs_dir":"","moniker":"evmbridge-node","node_id":"0151f772c4f4ee4e3a201ccf9ec5d2096c5e9b94"}
+2026-02-10 12:12:04.078 | - address: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd
+2026-02-10 12:12:04.078 |   name: validator
+2026-02-10 12:12:04.078 |   pubkey: '{"@type":"/ethermint.crypto.v1.ethsecp256k1.PubKey","key":"AxsPvNf4JFM+hxVZMCkng4TJW1fglXCnqOEoqp9vqXsY"}'
+2026-02-10 12:12:04.078 |   type: local
+2026-02-10 12:12:04.078 | 
+2026-02-10 12:12:04.078 | 
+2026-02-10 12:12:04.183 | Error: accepts 2 arg(s), received 0
+2026-02-10 12:12:04.183 | Usage:
+2026-02-10 12:12:04.183 |   evmosd add-genesis-account ADDRESS_OR_KEY_NAME COIN... [flags]
+2026-02-10 12:12:04.183 | 
+2026-02-10 12:12:04.183 | Flags:
+2026-02-10 12:12:04.183 |       --clawback                 create clawback account
+2026-02-10 12:12:04.183 |       --funder string            funder address for clawback
+2026-02-10 12:12:04.183 |       --grpc-addr string         the gRPC endpoint to use for this chain
+2026-02-10 12:12:04.183 |       --grpc-insecure            allow gRPC over insecure channels, if not TLS the server must use TLS
+2026-02-10 12:12:04.183 |       --height int               Use a specific height to query state at (this can error if the node is pruning state)
+2026-02-10 12:12:04.183 |   -h, --help                     help for add-genesis-account
+2026-02-10 12:12:04.183 |       --home string              The application home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:04.183 |       --keyring-backend string   Select keyring's backend (os|file|kwallet|pass|test) (default "os")
+2026-02-10 12:12:04.183 |       --lockup string            path to file containing unlocking periods for a clawback vesting account
+2026-02-10 12:12:04.183 |       --node string              <host>:<port> to Tendermint RPC interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:04.183 |   -o, --output string            Output format (text|json) (default "text")
+2026-02-10 12:12:04.183 |       --vesting string           path to file containing vesting periods for a clawback vesting account
+2026-02-10 12:12:04.183 |       --vesting-start-time int   schedule start time (unix epoch) for vesting accounts
+2026-02-10 12:12:04.183 | 
+2026-02-10 12:12:04.183 | Global Flags:
+2026-02-10 12:12:04.183 |   -b, --broadcast-mode string   Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:04.183 |       --chain-id string         Specify Chain ID for sending Tx
+2026-02-10 12:12:04.183 |       --fees string             Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:04.183 |       --from string             Name or address of private key with which to sign
+2026-02-10 12:12:04.183 |       --gas-adjustment float    adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:04.183 |       --gas-prices string       Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:04.183 |       --log_format string       The logging format (json|plain) (default "plain")
+2026-02-10 12:12:04.183 |       --log_level string        The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:04.183 |       --trace                   print out full stack trace on errors
+2026-02-10 12:12:04.183 | 
+2026-02-10 12:12:04.330 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:04.330 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:04.330 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:04.330 | sh: --chain-id: not found
+2026-02-10 12:12:04.330 | sh: --keyring-backend: not found
+2026-02-10 12:12:04.330 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:04.331 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:04.331 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:04.331 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:04.331 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:04.331 | sh: --json-rpc.api: not found
+2026-02-10 12:12:04.331 | sh: --api.enable: not found
+2026-02-10 12:12:05.117 | Initializing Evmos node...
+2026-02-10 12:12:05.210 | Error: genesis.json file already exists: /home/evmos/.evmosd/config/genesis.json
+2026-02-10 12:12:05.210 | Usage:
+2026-02-10 12:12:05.210 |   evmosd init MONIKER [flags]
+2026-02-10 12:12:05.210 | 
+2026-02-10 12:12:05.210 | Flags:
+2026-02-10 12:12:05.210 |       --chain-id string   genesis file chain-id, if left blank will be randomly created
+2026-02-10 12:12:05.210 |   -h, --help              help for init
+2026-02-10 12:12:05.210 |       --home string       node's home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:05.210 |   -o, --overwrite         overwrite the genesis.json file
+2026-02-10 12:12:05.210 |       --recover           provide seed phrase to recover existing key instead of creating
+2026-02-10 12:12:05.210 | 
+2026-02-10 12:12:05.210 | Global Flags:
+2026-02-10 12:12:05.210 |   -b, --broadcast-mode string    Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:05.210 |       --fees string              Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:05.210 |       --from string              Name or address of private key with which to sign
+2026-02-10 12:12:05.210 |       --gas-adjustment float     adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:05.210 |       --gas-prices string        Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:05.210 |       --keyring-backend string   Select keyring's backend (default "os")
+2026-02-10 12:12:05.210 |       --log_format string        The logging format (json|plain) (default "plain")
+2026-02-10 12:12:05.210 |       --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:05.210 |       --node string              <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:05.210 |       --trace                    print out full stack trace on errors
+2026-02-10 12:12:05.211 | 
+2026-02-10 12:12:05.320 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:05.320 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:05.320 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:05.320 | sh: --chain-id: not found
+2026-02-10 12:12:05.320 | sh: --keyring-backend: not found
+2026-02-10 12:12:05.320 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:05.320 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:05.320 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:05.320 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:05.320 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:05.320 | sh: --json-rpc.api: not found
+2026-02-10 12:12:05.320 | sh: --api.enable: not found
+2026-02-10 12:12:06.096 | Initializing Evmos node...
+2026-02-10 12:12:06.190 | Error: genesis.json file already exists: /home/evmos/.evmosd/config/genesis.json
+2026-02-10 12:12:06.190 | Usage:
+2026-02-10 12:12:06.190 |   evmosd init MONIKER [flags]
+2026-02-10 12:12:06.190 | 
+2026-02-10 12:12:06.190 | Flags:
+2026-02-10 12:12:06.190 |       --chain-id string   genesis file chain-id, if left blank will be randomly created
+2026-02-10 12:12:06.190 |   -h, --help              help for init
+2026-02-10 12:12:06.190 |       --home string       node's home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:06.190 |   -o, --overwrite         overwrite the genesis.json file
+2026-02-10 12:12:06.190 |       --recover           provide seed phrase to recover existing key instead of creating
+2026-02-10 12:12:06.190 | 
+2026-02-10 12:12:06.190 | Global Flags:
+2026-02-10 12:12:06.190 |   -b, --broadcast-mode string    Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:06.190 |       --fees string              Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:06.190 |       --from string              Name or address of private key with which to sign
+2026-02-10 12:12:06.190 |       --gas-adjustment float     adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:06.190 |       --gas-prices string        Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:06.190 |       --keyring-backend string   Select keyring's backend (default "os")
+2026-02-10 12:12:06.190 |       --log_format string        The logging format (json|plain) (default "plain")
+2026-02-10 12:12:06.190 |       --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:06.190 |       --node string              <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:06.190 |       --trace                    print out full stack trace on errors
+2026-02-10 12:12:06.190 | 
+2026-02-10 12:12:06.310 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:06.310 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:06.310 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:06.310 | sh: --chain-id: not found
+2026-02-10 12:12:06.310 | sh: --keyring-backend: not found
+2026-02-10 12:12:06.310 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:06.311 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:06.311 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:06.311 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:06.311 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:06.311 | sh: --json-rpc.api: not found
+2026-02-10 12:12:06.311 | sh: --api.enable: not found
+2026-02-10 12:12:07.101 | Initializing Evmos node...
+2026-02-10 12:12:07.196 | Error: genesis.json file already exists: /home/evmos/.evmosd/config/genesis.json
+2026-02-10 12:12:07.196 | Usage:
+2026-02-10 12:12:07.196 |   evmosd init MONIKER [flags]
+2026-02-10 12:12:07.196 | 
+2026-02-10 12:12:07.196 | Flags:
+2026-02-10 12:12:07.196 |       --chain-id string   genesis file chain-id, if left blank will be randomly created
+2026-02-10 12:12:07.196 |   -h, --help              help for init
+2026-02-10 12:12:07.196 |       --home string       node's home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:07.196 |   -o, --overwrite         overwrite the genesis.json file
+2026-02-10 12:12:07.196 |       --recover           provide seed phrase to recover existing key instead of creating
+2026-02-10 12:12:07.196 | 
+2026-02-10 12:12:07.196 | Global Flags:
+2026-02-10 12:12:07.196 |   -b, --broadcast-mode string    Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:07.196 |       --fees string              Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:07.196 |       --from string              Name or address of private key with which to sign
+2026-02-10 12:12:07.196 |       --gas-adjustment float     adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:07.196 |       --gas-prices string        Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:07.196 |       --keyring-backend string   Select keyring's backend (default "os")
+2026-02-10 12:12:07.196 |       --log_format string        The logging format (json|plain) (default "plain")
+2026-02-10 12:12:07.196 |       --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:07.196 |       --node string              <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:07.196 |       --trace                    print out full stack trace on errors
+2026-02-10 12:12:07.196 | 
+2026-02-10 12:12:07.308 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:07.308 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:07.308 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:07.308 | sh: --chain-id: not found
+2026-02-10 12:12:07.308 | sh: --keyring-backend: not found
+2026-02-10 12:12:07.308 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:07.308 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:07.308 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:07.308 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:07.308 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:07.308 | sh: --json-rpc.api: not found
+2026-02-10 12:12:07.308 | sh: --api.enable: not found
+2026-02-10 12:12:08.471 | Error: genesis.json file already exists: /home/evmos/.evmosd/config/genesis.json
+2026-02-10 12:12:08.471 | Usage:
+2026-02-10 12:12:08.471 |   evmosd init MONIKER [flags]
+2026-02-10 12:12:08.471 | 
+2026-02-10 12:12:08.471 | Flags:
+2026-02-10 12:12:08.471 |       --chain-id string   genesis file chain-id, if left blank will be randomly created
+2026-02-10 12:12:08.471 |   -h, --help              help for init
+2026-02-10 12:12:08.471 |       --home string       node's home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:08.471 |   -o, --overwrite         overwrite the genesis.json file
+2026-02-10 12:12:08.471 |       --recover           provide seed phrase to recover existing key instead of creating
+2026-02-10 12:12:08.471 | 
+2026-02-10 12:12:08.471 | Global Flags:
+2026-02-10 12:12:08.471 |   -b, --broadcast-mode string    Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:08.471 |       --fees string              Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:08.471 |       --from string              Name or address of private key with which to sign
+2026-02-10 12:12:08.471 |       --gas-adjustment float     adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:08.472 |       --gas-prices string        Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:08.472 |       --keyring-backend string   Select keyring's backend (default "os")
+2026-02-10 12:12:08.472 |       --log_format string        The logging format (json|plain) (default "plain")
+2026-02-10 12:12:08.472 |       --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:08.472 |       --node string              <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:08.472 |       --trace                    print out full stack trace on errors
+2026-02-10 12:12:08.472 | 
+2026-02-10 12:12:08.372 | Initializing Evmos node...
+2026-02-10 12:12:08.594 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:08.594 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:08.594 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:08.594 | sh: --chain-id: not found
+2026-02-10 12:12:08.594 | sh: --keyring-backend: not found
+2026-02-10 12:12:08.594 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:08.595 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:08.595 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:08.595 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:08.595 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:08.595 | sh: --json-rpc.api: not found
+2026-02-10 12:12:08.595 | sh: --api.enable: not found
+2026-02-10 12:12:10.461 | Initializing Evmos node...
+2026-02-10 12:12:10.561 | Error: genesis.json file already exists: /home/evmos/.evmosd/config/genesis.json
+2026-02-10 12:12:10.561 | Usage:
+2026-02-10 12:12:10.561 |   evmosd init MONIKER [flags]
+2026-02-10 12:12:10.561 | 
+2026-02-10 12:12:10.561 | Flags:
+2026-02-10 12:12:10.561 |       --chain-id string   genesis file chain-id, if left blank will be randomly created
+2026-02-10 12:12:10.561 |   -h, --help              help for init
+2026-02-10 12:12:10.561 |       --home string       node's home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:10.561 |   -o, --overwrite         overwrite the genesis.json file
+2026-02-10 12:12:10.561 |       --recover           provide seed phrase to recover existing key instead of creating
+2026-02-10 12:12:10.561 | 
+2026-02-10 12:12:10.561 | Global Flags:
+2026-02-10 12:12:10.561 |   -b, --broadcast-mode string    Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:10.561 |       --fees string              Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:10.561 |       --from string              Name or address of private key with which to sign
+2026-02-10 12:12:10.561 |       --gas-adjustment float     adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:10.561 |       --gas-prices string        Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:10.561 |       --keyring-backend string   Select keyring's backend (default "os")
+2026-02-10 12:12:10.561 |       --log_format string        The logging format (json|plain) (default "plain")
+2026-02-10 12:12:10.561 |       --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:10.561 |       --node string              <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:10.561 |       --trace                    print out full stack trace on errors
+2026-02-10 12:12:10.561 | 
+2026-02-10 12:12:10.706 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:10.706 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:10.706 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:10.706 | sh: --chain-id: not found
+2026-02-10 12:12:10.706 | sh: --keyring-backend: not found
+2026-02-10 12:12:10.706 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:10.707 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:10.707 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:10.707 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:10.707 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:10.707 | sh: --json-rpc.api: not found
+2026-02-10 12:12:10.707 | sh: --api.enable: not found
+2026-02-10 12:12:14.271 | Error: genesis.json file already exists: /home/evmos/.evmosd/config/genesis.json
+2026-02-10 12:12:14.272 | Usage:
+2026-02-10 12:12:14.272 |   evmosd init MONIKER [flags]
+2026-02-10 12:12:14.272 | 
+2026-02-10 12:12:14.272 | Flags:
+2026-02-10 12:12:14.272 |       --chain-id string   genesis file chain-id, if left blank will be randomly created
+2026-02-10 12:12:14.272 |   -h, --help              help for init
+2026-02-10 12:12:14.272 |       --home string       node's home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:14.272 |   -o, --overwrite         overwrite the genesis.json file
+2026-02-10 12:12:14.272 |       --recover           provide seed phrase to recover existing key instead of creating
+2026-02-10 12:12:14.272 | 
+2026-02-10 12:12:14.272 | Global Flags:
+2026-02-10 12:12:14.272 |   -b, --broadcast-mode string    Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:14.272 |       --fees string              Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:14.272 |       --from string              Name or address of private key with which to sign
+2026-02-10 12:12:14.272 |       --gas-adjustment float     adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:14.272 |       --gas-prices string        Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:14.272 |       --keyring-backend string   Select keyring's backend (default "os")
+2026-02-10 12:12:14.272 |       --log_format string        The logging format (json|plain) (default "plain")
+2026-02-10 12:12:14.272 |       --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:14.272 |       --node string              <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:14.272 |       --trace                    print out full stack trace on errors
+2026-02-10 12:12:14.272 | 
+2026-02-10 12:12:14.179 | Initializing Evmos node...
+2026-02-10 12:12:14.397 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:14.397 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:14.397 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:14.397 | sh: --chain-id: not found
+2026-02-10 12:12:14.397 | sh: --keyring-backend: not found
+2026-02-10 12:12:14.397 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:14.398 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:14.398 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:14.398 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:14.398 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:14.398 | sh: --json-rpc.api: not found
+2026-02-10 12:12:14.398 | sh: --api.enable: not found
+2026-02-10 12:12:21.163 | Error: genesis.json file already exists: /home/evmos/.evmosd/config/genesis.json
+2026-02-10 12:12:21.163 | Usage:
+2026-02-10 12:12:21.163 |   evmosd init MONIKER [flags]
+2026-02-10 12:12:21.163 | 
+2026-02-10 12:12:21.163 | Flags:
+2026-02-10 12:12:21.163 |       --chain-id string   genesis file chain-id, if left blank will be randomly created
+2026-02-10 12:12:21.163 |   -h, --help              help for init
+2026-02-10 12:12:21.163 |       --home string       node's home directory (default "/home/evmos/.evmosd")
+2026-02-10 12:12:21.163 |   -o, --overwrite         overwrite the genesis.json file
+2026-02-10 12:12:21.163 |       --recover           provide seed phrase to recover existing key instead of creating
+2026-02-10 12:12:21.163 | 
+2026-02-10 12:12:21.163 | Global Flags:
+2026-02-10 12:12:21.163 |   -b, --broadcast-mode string    Transaction broadcasting mode (sync|async) (default "sync")
+2026-02-10 12:12:21.163 |       --fees string              Fees to pay along with transaction; eg: 10aevmos
+2026-02-10 12:12:21.163 |       --from string              Name or address of private key with which to sign
+2026-02-10 12:12:21.163 |       --gas-adjustment float     adjustment factor to be multiplied against the estimate returned by the tx simulation; if the gas limit is set manually this flag is ignored  (default 1.2)
+2026-02-10 12:12:21.163 |       --gas-prices string        Gas prices to determine the transaction fee (e.g. 10aevmos)
+2026-02-10 12:12:21.163 |       --keyring-backend string   Select keyring's backend (default "os")
+2026-02-10 12:12:21.163 |       --log_format string        The logging format (json|plain) (default "plain")
+2026-02-10 12:12:21.163 |       --log_level string         The logging level (trace|debug|info|warn|error|fatal|panic) (default "info")
+2026-02-10 12:12:21.163 |       --node string              <host>:<port> to tendermint rpc interface for this chain (default "tcp://localhost:26657")
+2026-02-10 12:12:21.163 |       --trace                    print out full stack trace on errors
+2026-02-10 12:12:21.163 | 
+2026-02-10 12:12:21.068 | Initializing Evmos node...
+2026-02-10 12:12:21.300 | sh: evmos1ul6cft9ff6jjlq3m4rhme2q3sz8gshaxmvu7qd: not found
+2026-02-10 12:12:21.300 | sh: 1000000000000000000000aevmos: not found
+2026-02-10 12:12:21.300 | sh: 1000000000000000000aevmos: not found
+2026-02-10 12:12:21.300 | sh: --chain-id: not found
+2026-02-10 12:12:21.300 | sh: --keyring-backend: not found
+2026-02-10 12:12:21.300 | sh: /root/.evmosd/config/app.toml: Permission denied
+2026-02-10 12:12:21.300 | sh: --rpc.unsafe: not found
+2026-02-10 12:12:21.300 | sh: --json-rpc.enable: not found
+2026-02-10 12:12:21.300 | sh: --json-rpc.address=0.0.0.0:8545: not found
+2026-02-10 12:12:21.301 | sh: --json-rpc.ws-address=0.0.0.0:8546: not found
+2026-02-10 12:12:21.301 | sh: --json-rpc.api: not found
+2026-02-10 12:12:21.301 | sh: --api.enable: not found

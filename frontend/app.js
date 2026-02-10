@@ -6,11 +6,11 @@
 const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 const CHAIN_CONFIG = {
-    chainId: "0x2328", // 9000 in hex
-    chainName: "Ethermint Local",
+    chainId: "0x7a69", // 31337 in hex (Hardhat)
+    chainName: "Hardhat Local",
     rpcUrls: ["http://localhost:8545"],
     nativeCurrency: {
-        name: "Photon",
+        name: "Ether",
         symbol: "ETH",
         decimals: 18
     },
@@ -156,6 +156,13 @@ const elements = {
 // Initialization
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if ethers.js loaded correctly
+    if (typeof ethers === 'undefined') {
+        alert('Error: Ethers.js library failed to load. Please check your internet connection and refresh the page.');
+        console.error('Ethers.js not loaded');
+        return;
+    }
+    
     initializeApp();
     setupEventListeners();
     checkWalletAvailability();
@@ -180,6 +187,12 @@ function setupEventListeners() {
     elements.addChainBtn.addEventListener('click', addChainToWallet);
     elements.retryConnectionBtn.addEventListener('click', retryConnection);
     elements.closeModalBtn.addEventListener('click', closeModal);
+    
+    // Add copy logs button listener
+    const copyLogsBtn = document.getElementById('copyLogs');
+    if (copyLogsBtn) {
+        copyLogsBtn.addEventListener('click', copyLogs);
+    }
 }
 
 function checkWalletAvailability() {
@@ -576,6 +589,38 @@ function log(message, type = 'info') {
 function clearLogs() {
     elements.logsContainer.innerHTML = '';
     log('Logs cleared', 'info');
+}
+
+function copyLogs() {
+    const logEntries = elements.logsContainer.querySelectorAll('.log-entry');
+    const logsText = Array.from(logEntries).map(entry => {
+        const time = entry.querySelector('.log-time')?.textContent || '';
+        const content = entry.querySelector('.log-content')?.textContent || '';
+        return `${time} ${content}`;
+    }).join('\n');
+    
+    if (!logsText.trim()) {
+        log('No logs to copy', 'warning');
+        return;
+    }
+    
+    navigator.clipboard.writeText(logsText).then(() => {
+        log('✅ Logs copied to clipboard', 'success');
+        
+        // Visual feedback on button
+        const copyBtn = document.getElementById('copyLogs');
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        copyBtn.style.backgroundColor = '#10b981';
+        
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.style.backgroundColor = '';
+        }, 2000);
+    }).catch(err => {
+        log('❌ Failed to copy logs', 'error');
+        console.error('Copy failed:', err);
+    });
 }
 
 function showStatus(message, type) {
