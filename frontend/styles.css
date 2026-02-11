@@ -194,6 +194,19 @@ section {
     box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
 }
 
+.btn-warning {
+    background-color: #f59e0b;
+    color: white;
+    border: 2px solid transparent;
+    font-size: 0.9rem;
+}
+
+.btn-warning:hover:not(:disabled) {
+    background-color: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
 .btn-primary {
     background-color: var(--accent-blue);
     color: var(--bg-dark);
@@ -221,6 +234,18 @@ section {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
     min-width: auto;
+}
+
+.btn-warning {
+    background-color: rgba(251, 191, 36, 0.1);
+    color: #FCD34D;
+    border: 1px solid #FCD34D;
+}
+
+.btn-warning:hover:not(:disabled) {
+    background-color: rgba(251, 191, 36, 0.2);
+    border-color: #FBBF24;
+    color: #FBBF24;
 }
 
 /* ==========================================

@@ -23,6 +23,11 @@ const KEPLR_CHAIN_CONFIG = {
     chainName: "Evmos Local Testnet",
     rpc: "http://localhost:26657",
     rest: "http://localhost:1317",
+    // Enable EVM features
+    features: ["eth-address-gen", "eth-key-sign"],
+    // EVM chain ID for eth_chainId
+    chainIdentifier: "evmbridge_9000-1",
+    evmChainId: 9000,
     bip44: {
         coinType: 60 // ETH coin type for EVM compatibility
     },
@@ -128,13 +133,17 @@ let currentAccount = null;
 let activeWallet = null; // 'metamask' or 'keplr'
 let web3Provider = null;
 let contract = null;
+let keplrChainAdded = false; // Track if chain was added to Keplr
 
 // ==========================================
 // DOM Elements
 // ==========================================
 const elements = {
     connectMetaMask: document.getElementById('connectMetaMask'),
+    disconnectMetaMask: document.getElementById('disconnectMetaMask'),
     connectKeplr: document.getElementById('connectKeplr'),
+    disconnectKeplr: document.getElementById('disconnectKeplr'),
+    manualAddChain: document.getElementById('manualAddChain'),
     evmAddress: document.getElementById('evmAddress'),
     cosmosAddress: document.getElementById('cosmosAddress'),
     activeWalletDisplay: document.getElementById('activeWallet'),
@@ -185,7 +194,10 @@ function initializeApp() {
 
 function setupEventListeners() {
     elements.connectMetaMask.addEventListener('click', connectMetaMask);
+    elements.disconnectMetaMask.addEventListener('click', disconnectMetaMask);
     elements.connectKeplr.addEventListener('click', connectKeplr);
+    elements.disconnectKeplr.addEventListener('click', disconnectKeplr);
+    elements.manualAddChain.addEventListener('click', showManualChainInstructions);
     elements.submitMessage.addEventListener('click', submitMessage);
     elements.refreshState.addEventListener('click', loadContractState);
     elements.clearLogs.addEventListener('click', clearLogs);
@@ -211,6 +223,10 @@ function checkWalletAvailability() {
         log('⚠️ Keplr not detected', 'warning');
         elements.connectKeplr.disabled = true;
         elements.connectKeplr.textContent = 'Keplr Not Installed';
+    } else if (!window.keplr.ethereum) {
+        log('⚠️ Keplr Ethereum provider not available (need Keplr v0.12+)', 'warning');
+        elements.connectKeplr.disabled = true;
+        elements.connectKeplr.textContent = 'Update Keplr Extension';
     }
 }
 
@@ -253,6 +269,10 @@ async function connectMetaMask() {
         updateUI();
         await loadBalance();
         await loadContractState();
+
+        // Show disconnect button
+        elements.connectMetaMask.style.display = 'none';
+        elements.disconnectMetaMask.style.display = 'inline-flex';
 
         log(`✅ Connected to MetaMask: ${currentAccount}`, 'success');
         showStatus('Successfully connected to MetaMask!', 'success');
@@ -305,42 +325,138 @@ async function connectKeplr() {
             return;
         }
 
-        // Try to enable the chain
-        try {
-            await window.keplr.enable(KEPLR_CHAIN_CONFIG.chainId);
-        } catch (error) {
-            // Chain not added, show modal
-            log('⚠️ Chain not added to Keplr', 'warning');
-            showChainModal(true);
-            return;
+        if (!window.keplr.ethereum) {
+            throw new Error('Keplr Ethereum provider not available. Update to Keplr v0.12+');
         }
 
-        // Get account
-        const offlineSigner = window.keplr.getOfflineSigner(KEPLR_CHAIN_CONFIG.chainId);
-        const accounts = await offlineSigner.getAccounts();
+        // Try to enable the chain (will fail if not added)
+        try {
+            await window.keplr.enable(KEPLR_CHAIN_CONFIG.chainId);
+            log('✅ Chain already exists in Keplr', 'success');
+        } catch (error) {
+            // Chain not added, suggest it now
+            log('⚠️ Chain not found, adding to Keplr...', 'warning');
+            
+            try {
+                await window.keplr.experimentalSuggestChain(KEPLR_CHAIN_CONFIG);
+                log('✅ Chain added! Approve in Keplr popup if shown', 'success');
+                
+                // Wait a moment for user to approve
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Try to enable again
+                await window.keplr.enable(KEPLR_CHAIN_CONFIG.chainId);
+                log('✅ Chain enabled successfully', 'success');
+            } catch (addError) {
+                throw new Error(`Failed to add chain: ${addError.message}`);
+            }
+        }
+
+        // Request accounts from Keplr's Ethereum provider
+        const accounts = await window.keplr.ethereum.request({
+            method: 'eth_requestAccounts'
+        });
 
         if (accounts.length === 0) {
             throw new Error('No accounts found in Keplr');
         }
 
-        // Get EVM address using eth_accounts
-        const key = await window.keplr.getKey(KEPLR_CHAIN_CONFIG.chainId);
-        
-        // For EVM compatibility, we need the hex address
-        // Keplr provides the address in bech32, we need to convert or use eth signing
-        currentAccount = ethers.utils.computeAddress(key.pubKey);
+        currentAccount = accounts[0];
 
-        // Initialize Web3 with Keplr's EVM provider
-        web3Provider = new ethers.providers.Web3Provider(window.keplr);
-        contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, web3Provider.getSigner());
+        // Initialize Web3 with explicit RPC endpoint
+        log('🔗 Connecting to local RPC: http://localhost:8545', 'info');
+        const jsonRpcProvider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
+        
+        // Verify RPC connection
+        try {
+            const network = await jsonRpcProvider.getNetwork();
+            log(`✅ Connected to network: ${network.name} (chainId: ${network.chainId})`, 'success');
+        } catch (rpcError) {
+            throw new Error(`Cannot connect to RPC at localhost:8545: ${rpcError.message}`);
+        }
+        
+        // CRITICAL: Switch Keplr to correct chain first
+        log('🔄 Switching Keplr to chain 9000...', 'info');
+        try {
+            await window.keplr.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: '0x2328' }] // 9000 in hex
+            });
+            log('✅ Keplr switched to chain 9000', 'success');
+        } catch (switchError) {
+            // Chain might not be added to Keplr's EVM side
+            log('⚠️ Could not switch chain, adding EVM chain config...', 'warning');
+            try {
+                await window.keplr.ethereum.request({
+                    method: 'wallet_addEthereumChain',
+                    params: [CHAIN_CONFIG]
+                });
+                log('✅ EVM chain added to Keplr', 'success');
+            } catch (addError) {
+                log(`⚠️ Could not add EVM chain: ${addError.message}`, 'warning');
+            }
+        }
+        
+        // Use Keplr's provider for signing only
+        const keplrWeb3Provider = new ethers.providers.Web3Provider(window.keplr.ethereum);
+        const signer = keplrWeb3Provider.getSigner();
+        
+        // Verify Keplr is on correct chain
+        const keplrNetwork = await keplrWeb3Provider.getNetwork();
+        log(`📡 Keplr network: chainId ${keplrNetwork.chainId}`, 'info');
+        
+        if (keplrNetwork.chainId !== 9000) {
+            throw new Error(`Keplr is on wrong chain! Expected 9000, got ${keplrNetwork.chainId}`);
+        }
+        
+        // Use JsonRpcProvider for reading, signer for writing
+        web3Provider = jsonRpcProvider;
+        
+        // IMPORTANT: Create contract with jsonRpcProvider for reading
+        // The signer will be used later for transactions
+        contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, jsonRpcProvider);
+        
+        log('🔍 Testing contract read capability...', 'info');
+        try {
+            const [testCount] = await contract.getLatestMessage();
+            log(`✅ Contract readable: ${testCount} messages found`, 'success');
+        } catch (testError) {
+            log(`⚠️ Contract read test failed: ${testError.message}`, 'error');
+        }
 
         activeWallet = 'keplr';
+        keplrChainAdded = true;
         updateUI();
         await loadBalance();
         await loadContractState();
 
+        // Show disconnect button
+        elements.connectKeplr.style.display = 'none';
+        elements.disconnectKeplr.style.display = 'inline-flex';
+
         log(`✅ Connected to Keplr: ${currentAccount}`, 'success');
-        showStatus('Successfully connected to Keplr!', 'success');
+        
+        // Wait a moment for balance to load
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Check balance
+        log('💰 Checking balance via localhost:8545...', 'info');
+        const balance = await web3Provider.getBalance(currentAccount);
+        const balanceInEth = ethers.utils.formatEther(balance);
+        
+        log(`💰 Balance: ${parseFloat(balanceInEth).toFixed(4)} STAKE`, 'info');
+        log(`   Raw balance (wei): ${balance.toString()}`, 'info');
+        log(`   Raw balance (hex): ${balance.toHexString()}`, 'info');
+        
+        if (balance.isZero()) {
+            log('⚠️ WARNING: Balance is 0 STAKE!', 'warning');
+            log('⚠️ This account has no funds. Did you connect the wrong account?', 'warning');
+            log('💡 Expected account: 0xA4C8E2797799a5adCEcD6b1fE720355f413B8937', 'info');
+            log(`💡 Connected account: ${currentAccount}`, 'info');
+            showStatus('⚠️ Connected but balance is 0! Wrong account?', 'warning');
+        } else {
+            showStatus(`Successfully connected to Keplr! Balance: ${parseFloat(balanceInEth).toFixed(4)} STAKE`, 'success');
+        }
 
     } catch (error) {
         console.error('Keplr connection error:', error);
@@ -386,6 +502,167 @@ async function addChainToWallet() {
 async function retryConnection() {
     closeModal();
     await connectKeplr();
+}
+
+// ==========================================
+// Force Add Chain to Keplr
+// ==========================================
+// ==========================================
+// Manual Chain Addition Helper
+// ==========================================
+function showManualChainInstructions() {
+    log('', 'info');
+    log('🔧 MANUAL CHAIN ADDITION TO KEPLR', 'info');
+    log('================================================', 'info');
+    log('', 'info');
+    log('⚠️ IMPORTANT: Run these commands in YOUR WEBSITE CONSOLE (http://localhost:8080)', 'warning');
+    log('   NOT in the Keplr extension console!', 'warning');
+    log('', 'info');
+    log('If the automatic chain addition doesn\'t show a popup, try this:', 'info');
+    log('', 'info');
+    log('1️⃣ Make sure you\'re on http://localhost:8080', 'info');
+    log('2️⃣ Open browser console (F12 or right-click > Inspect)', 'info');
+    log('3️⃣ Make sure Keplr extension is installed and unlocked', 'info');
+    log('4️⃣ Copy and paste BOTH code blocks below (one at a time):', 'info');
+    log('', 'info');
+    log('---STEP 1: Add Cosmos Chain---', 'warning');
+    console.log(`
+// STEP 1: Add Cosmos chain to Keplr
+window.keplr.experimentalSuggestChain({
+    chainId: "evmbridge_9000-1",
+    chainName: "Evmos Bridge TestNet",
+    rpc: "http://localhost:26657",
+    rest: "http://localhost:1317",
+    bip44: { coinType: 60 },
+    bech32Config: {
+        bech32PrefixAccAddr: "evmos",
+        bech32PrefixAccPub: "evmospub",
+        bech32PrefixValAddr: "evmosvaloper",
+        bech32PrefixValPub: "evmosvaloperpub",
+        bech32PrefixConsAddr: "evmosvalcons",
+        bech32PrefixConsPub: "evmosvalconspub"
+    },
+    currencies: [{
+        coinDenom: "STAKE",
+        coinMinimalDenom: "stake",
+        coinDecimals: 18,
+        coinGeckoId: "evmos"
+    }],
+    feeCurrencies: [{
+        coinDenom: "STAKE",
+        coinMinimalDenom: "stake",
+        coinDecimals: 18,
+        gasPriceStep: { low: 1, average: 1, high: 1 }
+    }],
+    stakeCurrency: {
+        coinDenom: "STAKE",
+        coinMinimalDenom: "stake",
+        coinDecimals: 18
+    },
+    features: ["eth-address-gen", "eth-key-sign"]
+}).then(() => {
+    console.log("✅ Cosmos chain added! Now run STEP 2...");
+}).catch(err => {
+    console.error("❌ Error:", err.message);
+});`);
+    log('', 'info');
+    log('---STEP 2: Add EVM Chain Config---', 'warning');
+    console.log(`
+// STEP 2: Add EVM chain to Keplr's ethereum provider
+window.keplr.ethereum.request({
+    method: 'wallet_addEthereumChain',
+    params: [{
+        chainId: '0x2328',
+        chainName: 'Evmos Bridge TestNet',
+        rpcUrls: ['http://localhost:8545'],
+        nativeCurrency: {
+            name: 'Stake',
+            symbol: 'STAKE',
+            decimals: 18
+        },
+        blockExplorerUrls: []
+    }]
+}).then(() => {
+    console.log("✅ EVM chain added! Now click 'Connect Keplr' button");
+}).catch(err => {
+    console.error("❌ Error:", err.message);
+});`);
+    log('', 'info');
+    log('5️⃣ Press ENTER after each code block', 'info');
+    log('6️⃣ Approve any Keplr popups that appear', 'info');
+    log('7️⃣ After both steps, click "Connect Keplr" button', 'info');
+    log('', 'info');
+    log('💡 If popup STILL doesn\'t appear:', 'warning');
+    log('   - Keplr has security restrictions for localhost chains', 'warning');
+    log('   - Alternative: Use MetaMask (works perfectly with same setup)', 'warning');
+    log('   - Import same private key to MetaMask', 'warning');
+    log('', 'info');
+    log('🔍 To check current Keplr chain:', 'info');
+    console.log(`
+// Check which chain Keplr is currently on
+window.keplr.ethereum.request({method: 'eth_chainId'}).then(id => {
+    console.log("Current chainId:", id, "| Decimal:", parseInt(id, 16));
+    console.log("Expected: 0x2328 | Decimal: 9000");
+});`);
+    log('', 'info');
+    log('================================================', 'info');
+    
+    showStatus('📋 Check console for manual chain addition instructions', 'info');
+}
+
+// ==========================================
+// Disconnect Functions
+// ==========================================
+function disconnectMetaMask() {
+    try {
+        // Remove event listeners
+        if (window.ethereum) {
+            window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+            window.ethereum.removeListener('chainChanged', handleChainChanged);
+        }
+
+        // Clear state
+        web3Provider = null;
+        contract = null;
+        currentAccount = null;
+        if (activeWallet === 'metamask') {
+            activeWallet = null;
+        }
+
+        // Update UI
+        elements.connectMetaMask.style.display = 'inline-flex';
+        elements.disconnectMetaMask.style.display = 'none';
+        updateUI();
+
+        log('✅ Disconnected from MetaMask', 'info');
+        showStatus('Disconnected from MetaMask', 'info');
+    } catch (error) {
+        console.error('Error disconnecting MetaMask:', error);
+        log(`❌ Error disconnecting: ${error.message}`, 'error');
+    }
+}
+
+function disconnectKeplr() {
+    try {
+        // Clear state
+        web3Provider = null;
+        contract = null;
+        currentAccount = null;
+        if (activeWallet === 'keplr') {
+            activeWallet = null;
+        }
+
+        // Update UI
+        elements.connectKeplr.style.display = 'inline-flex';
+        elements.disconnectKeplr.style.display = 'none';
+        updateUI();
+
+        log('✅ Disconnected from Keplr', 'info');
+        showStatus('Disconnected from Keplr', 'info');
+    } catch (error) {
+        console.error('Error disconnecting Keplr:', error);
+        log(`❌ Error disconnecting: ${error.message}`, 'error');
+    }
 }
 
 // ==========================================
@@ -435,12 +712,39 @@ async function submitMessage() {
         elements.submitMessage.disabled = true;
         elements.submitMessage.textContent = 'Submitting...';
 
+        // For Keplr, we need to use a contract instance with signer
+        let contractForWrite = contract;
+        
+        if (activeWallet === 'keplr') {
+            // Verify Keplr is still on correct chain
+            const keplrProvider = new ethers.providers.Web3Provider(window.keplr.ethereum);
+            const currentNetwork = await keplrProvider.getNetwork();
+            
+            log(`🔍 Current Keplr chainId: ${currentNetwork.chainId}`, 'info');
+            
+            if (currentNetwork.chainId !== 9000) {
+                log('⚠️ Wrong chain! Switching to 9000...', 'warning');
+                await window.keplr.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x2328' }]
+                });
+                // Wait for switch
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            contractForWrite = new ethers.Contract(
+                CONTRACT_ADDRESS, 
+                CONTRACT_ABI, 
+                keplrProvider.getSigner()
+            );
+        }
+
         // Estimate gas first
-        const gasEstimate = await contract.estimateGas.writeMessage(message);
+        const gasEstimate = await contractForWrite.estimateGas.writeMessage(message);
         log(`⛽ Estimated gas: ${gasEstimate.toString()}`, 'info');
 
         // Send transaction
-        const tx = await contract.writeMessage(message);
+        const tx = await contractForWrite.writeMessage(message);
         log(`📡 Transaction sent: ${tx.hash}`, 'info');
         log(`⏳ Waiting for confirmation...`, 'info');
 
@@ -482,9 +786,14 @@ async function loadContractState() {
 
     try {
         log('🔄 Refreshing contract state...', 'info');
+        log(`   Contract address: ${contract.address}`, 'info');
+        log(`   Provider: ${contract.provider.connection?.url || 'unknown'}`, 'info');
+        log(`   Active wallet: ${activeWallet}`, 'info');
 
         const [count, lastMsg, lastSenderAddr] = await contract.getLatestMessage();
 
+        log(`📊 Contract returned: count=${count}, sender=${lastSenderAddr}`, 'info');
+        
         elements.messageCount.textContent = count.toString();
         elements.lastMessage.textContent = lastMsg || 'No messages yet';
         elements.lastSender.textContent = lastSenderAddr !== ethers.constants.AddressZero
@@ -496,6 +805,7 @@ async function loadContractState() {
     } catch (error) {
         console.error('Load state error:', error);
         log(`❌ Failed to load state: ${error.message}`, 'error');
+        log(`   Stack: ${error.stack}`, 'error');
     }
 }
 
@@ -505,7 +815,7 @@ async function loadBalance() {
     try {
         const balance = await web3Provider.getBalance(currentAccount);
         const balanceInEth = ethers.utils.formatEther(balance);
-        elements.balance.textContent = `${parseFloat(balanceInEth).toFixed(4)} ETH`;
+        elements.balance.textContent = `${parseFloat(balanceInEth).toFixed(4)} STAKE`;
     } catch (error) {
         console.error('Balance error:', error);
         elements.balance.textContent = 'Error';

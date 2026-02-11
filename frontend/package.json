@@ -1,0 +1,19 @@
+{
+  "name": "evmbridge-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for EVMBridgeBoard dual-wallet testbed",
+  "scripts": {
+    "dev": "npx http-server -p 8080 -c-1",
+    "start": "npx http-server -p 8080 -c-1",
+    "serve": "npx http-server -p 8080 -c-1"
+  },
+  "keywords": [
+    "evmos",
+    "metamask",
+    "keplr",
+    "dual-wallet",
+    "ethereum"
+  ],
+  "author": "EVMBridgeBoard",
+  "license": "MIT"
+}
